@@ -30,6 +30,49 @@ void Orbit::Timestep( double dt )
 	double T = 2*PI*sqrt(((this=>a)^3)/(G*M)); // Sidereal orbital period.
 	double A = ((this=>a)*(1-((this=>e)^2)))/(1+(this=>e)*cos(this=>f)); // Altitude from center of Earth. Dependent on a, e, and f. Possible to use T if a is unknown.
 	double V = sqrt(G*M((2/r)-(1/(this->a)))); // Linear velocity Vis-viva equation.
+	
+	// Conversion functions (code adapted from OrbitNerd's, youtube)
+
+	double ftoE (double e, double f) {
+		// True anomaly to eccentric anomaly.
+		double sinE = sin(f)*sqrt(1-e^2)/(1+e*cos(f));
+		double cosE = (e+cos(f))/(1+e*cos(f));
+		return atan2(double sinE, double cosE);
+	}
+
+	double EtoM(double e, double E) {
+		// Eccentric anomaly to mean anomaly.
+		return E-e*sin(E);
+	}
+
+	double MtoE(double e, double M) {
+		// Mean anomaly to eccentric anomaly
+
+		// Make sure M lies between -pi and pi
+		M = fmod(double M, double pi);
+		if (M < pi) {M = M + 2*pi;}
+		else if (M > pi) {M = M - 2*pi;}
+
+		if ((M > -pi && M < 0) || (M > pi)) {E = M - e;}
+		else E = M + e;
+
+		// Iteratively approach value of E until it is more precise than our standards (defined by variable zero)
+		double Enew = E;
+		double zero = 1E-16; // Will this output a 16 decimal number or a 17 decimal number? I need 16,
+		do {
+			E = Enew;
+			Enew = E + (M - E + e*sin(E))/(1 - e*cos(E));
+		} while (abs(Enew - E) > zero)
+	
+		return Enew;
+		}
+
+	double Etof (double e, double E) {
+		// Eccentric anomaly to true anomaly.
+		double sinf = sin(E)*sqrt(1-e^2)/(1-e*cos(E));
+		double cosf = (cos(E)-e)/(1-e*cos(E));
+		return atan2(double sinf, double cosf);
+	}
 }
 
 
