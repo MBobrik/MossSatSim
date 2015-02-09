@@ -24,12 +24,12 @@ void Orbit::Timestep( double dt )
 	double f; // True anomaly (f): Angle from periapsis to satellite position.
 	
 	// Secondary elements (computed from primary elements)
-	double E = ftoE(this=>e, this=>f); // Eccentric anomaly
-	double M = EtoM(this=>e, this=>E); // Mean anomaly (M): Abstract angle used to determine mean motion and real angular velocity in an eccentric orbit. update M += ((this=>n)*t)
-	double n = sqrt((G*M)/((this=>a)^3)); // Mean motion (n): Abstract angular velocity used to determine real angular velocity in an eccentric orbit. Radians per second.
-	double T = 2*PI*sqrt(((this=>a)^3)/(G*M)); // Sidereal orbital period.
-	double A = ((this=>a)*(1-((this=>e)^2)))/(1+(this=>e)*cos(this=>f)); // Altitude from center of Earth. Dependent on a, e, and f. Possible to use T if a is unknown.
-	double V = sqrt(G*M((2/r)-(1/(this->a)))); // Linear velocity Vis-viva equation.
+	double E = ftoE(e, f); // Eccentric anomaly
+	double M = EtoM(e, E); // Mean anomaly (M): Abstract angle used to determine mean motion and real angular velocity in an eccentric orbit. update M += ((n)*t)
+	double n = sqrt((G*M)/((a)^3)); // Mean motion (n): Abstract angular velocity used to determine real angular velocity in an eccentric orbit. Radians per second.
+	double T = 2*PI*sqrt(((a)^3)/(G*M)); // Sidereal orbital period.
+	double A = ((a)*(1-((e)^2)))/(1+(e)*cos(f)); // Altitude from center of Earth. Dependent on a, e, and f. Possible to use T if a is unknown.
+	double V = sqrt(G*M((2/r)-(1/(a)))); // Linear velocity Vis-viva equation.
 	
 	// Conversion functions (code adapted from OrbitNerd's, youtube)
 
