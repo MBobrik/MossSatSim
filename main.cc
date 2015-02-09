@@ -30,7 +30,7 @@ int main()
 	Sun sun;
 	Moon moon;
 	Earth earth;
-	Orbit orbit;
+	OrbitFromAP orbit(407000, 399000, Deg2Rad(51.6480), Deg2Rad(3.6517), Deg2Rad(346.4218), Deg2Rad(119.6532) ); // ISS @ Epoch 09 February 2015 02:33:02 UTC
 
 	SatPhysics sat(
 		QAngle( 0, 0, 1, 0 ),  // some arbitrary val
@@ -46,8 +46,11 @@ int main()
 	ofstream fstr;
 	fstr.open( "result.txt" );
 
-	for(int i = 0; i < 1000; i++)
+	for(int i = 0; i < 20000; i++)
 	{
+		if (!(i % 10000)) { cout << '\n'; }
+		if (!(i % 200)) { cout << '.'; }
+
 		V3 sun_dir = sun.GetDirection();
 
 		V3 angular_velocity = sat.GetAngularVelocity();
@@ -63,6 +66,11 @@ int main()
 		fstr << "RPM : " << setw(7) << setprecision( 3 ) << rpm << 
 				" Rot2Sun angle : " << setw( 10 ) << setprecision( 6 ) << sun_rot_angle << 
 				" Rot2Sat angle : " << setw( 10 ) << setprecision( 6 ) << axis_rot_angle << '\n';
+
+		if (!((i+1) % 200)) {
+			V3 pos = orbit.GetPosition();
+			fstr << "POS : (" << setw(15) << setprecision(3) << fixed << pos.x << ',' << setw(15) << pos.y << ',' << setw(15) << pos.z << ")\n";
+		}
 
 		sim.Timestep( 0.05 );
 	}
