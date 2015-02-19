@@ -143,7 +143,8 @@ inline double V3::Distance2(const V3&v) const{ return Dist2(v); }
 inline double V3::Dist(const V3&v) const { return (*this - v).Sz(); }
 inline double V3::Distance(const V3&v) const { return Dist(v); }
 
-
+// Synthesizes some plausible arbitrary orthogonal axis when you have only direction  
+V3 MakeAuxAxis(const V3 &v);
 
 struct Q;
 

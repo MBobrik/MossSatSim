@@ -59,6 +59,27 @@ void Orthogonalize3D( V3 v[ 3 ] )
 	v[2]=v[2].Norm();
 }
 
+V3 MakeAuxAxis(const V3 &v) {
+	
+	double s2 = v.Sz2();
+	if(s2 <EPSILON2) {return V3(0,0,0);}
+	
+	if(v.x<=v.y) {
+		if(v.x<=v.z) {
+			double is = sqrt(s2/(s2-v.x*v.x));
+			 return V3(0,-v.z*is,v.y*is);
+		}
+	} else {
+		if(v.y<=v.z) {
+			double is = sqrt(s2/(s2-v.y*v.y));
+			return V3(v.z*is,0,-v.x*is);
+		}
+	}
+	
+	double is = sqrt(s2/(s2-v.z*v.z));
+	return V3(-v.y*is,v.x*is,0);
+}
+
 struct EVector
 {
 	V3 p,q;

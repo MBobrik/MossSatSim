@@ -6,9 +6,9 @@ class Orbit
 {
 	// orbital mechanics
 	// LINK: http://biomathman.com/pair/ElementConversionRecipes.pdf
-	
+
 	// Primary elements
-	
+
 	double a; // Semimajor axis (a).
 	double inc; // Inclination (i): Angle from equator to orbital plane.
 	double O; // Longitude of ascending node (O): Angle from reference axis to ascending node. Void if inc=0.
@@ -28,12 +28,11 @@ class Orbit
 	V3 pos;
 
 	void ComputePosFromElements();
-	
-	
+
 public:
 	// constants
 	static double G; // Gravitational constant
-	static double m; // Mass if the earth
+	static double m; // Mass of the earth
 	static double R; // Earth radius
 	static double epsilon; // E algorithm precision
 
@@ -57,5 +56,5 @@ class OrbitFromAP : public Orbit {
 public:
 	// initialize with perigee and apogee heights instead of semimajor axis and eccentricity
 	OrbitFromAP(double _Pa, double _Aa, double _inc, double _O, double _w, double _M0) :
-	Orbit(0.5 * (_Pa + _Aa) + R, _inc, _O, abs(_Pa - _Aa) / (_Pa + _Aa + 2 * R), _w, _M0) {}
+	Orbit(0.5 * (_Pa + _Aa) + R, _inc, _O, fabs(_Pa - _Aa) / (_Pa + _Aa + 2 * R), _w, _M0) {}
 };

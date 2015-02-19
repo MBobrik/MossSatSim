@@ -10,7 +10,7 @@ void Orbit::ComputePosFromElements( )
 	if(fabs(E-M) >= PI ) { // previous E is worthless, recompute from scratch
 		E = M;
 	}
-	
+
 	for(double d;;) {
 		d = E - e * sin(E) - M;
 		if( d*d < epsilon ) { // d*d is faster than fabs(d)
